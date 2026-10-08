@@ -1,0 +1,90 @@
+class:: PerlinNoise
+summary:: Periodic 1D Perlin-noise/fBm oscillator
+categories:: UGens>Generators
+related:: Classes/PerlinNoise2D, Classes/PerlinNoise3D, Guides/PerlinNoisePorts, Classes/LFNoise0, Classes/LFNoise1, Classes/Blip
+
+description::
+
+PerlinNoise is a pitched oscillator built from one-dimensional gradient Perlin noise. It follows the sound-synthesis technique described by Artem Popov in "Using Perlin noise in sound synthesis", Linux Audio Conference 2018.
+
+The paper describes Perlin noise as "a gradient noise that is built from a set of pseudo-random gradient vectors" and says the value at a point is found from dot products with nearby gradients, followed by smooth interpolation. In the 1D case used here, each octave chooses deterministic pseudo-random slopes on integer lattice points, computes the two line extrapolations around the current phase, and crossfades them with Perlin's quintic smoothing curve.
+
+Internally this UGen advances a normalized phase at code::freq:: Hz. For each sample it evaluates a periodic 1D Perlin noise octave, then sums several octaves as fractional Brownian motion (fBm). Each octave doubles the lattice density, equivalent to lacunarity 2, while code::persistence:: scales the amplitude of the next octave. The summed signal is normalized by the octave amplitude sum and clipped to the range code::-1..1::.
+
+The gradients are generated from a small integer hash using code::seed:: and the lattice index. The octave period wraps the hash lookup, so the gradient at the end of each octave matches the gradient at the start; this keeps the oscillator loop periodic.
+
+The maximum octave count is 32. Octave-count modulation is latched at the base waveform boundary instead of being applied immediately. Since every periodic 1D Perlin octave is zero at integer phase, changing the active fBm octave count at that point avoids the hard discontinuity that would occur if a new octave were inserted in the middle of a cycle. This is similar in intent to harmonic-count protection in band-limited oscillators such as code::Blip::, but here the transition point is the Perlin waveform's natural loop boundary.
+
+The closest vanilla UGens are code::LFNoise1:: and code::LFNoise2:: because they also make interpolated noise trajectories. PerlinNoise differs by being periodic and pitch-tracked, using gradient dot products rather than random sample values, and summing controllable fBm octaves.
+
+subsection:: Aliasing limit
+
+This UGen is not oversampled and not band-limited. With lacunarity fixed at 2, octave code::n:: has a lattice rate of approximately code::freq * (2 ** n)::, where code::n = 0:: is the first octave. A conservative useful-octave limit is:
+
+code::
+maxSafeOctaves = floor(log2(SampleRate.ir * 0.5 / freq)) + 1
+::
+
+Requested octaves above that limit can place the highest octave at or above Nyquist and will fold back as aliases. The interpolation curve also creates additional high-frequency partials, so audible aliasing can appear before that simple lattice-rate boundary, especially at high code::freq::, high code::octaves::, and high code::persistence:: values. Reducing code::octaves:: or code::persistence:: is the intended anti-aliasing control.
+
+classmethods::
+
+method::ar
+
+argument::freq
+Oscillator frequency in Hz. Audio-rate modulation is supported. Values are clipped to code::0..SampleRate * 0.499::.
+
+argument::octaves
+Number of fBm octaves, rounded to the nearest integer and clipped to code::1..32::. Changes are latched at the base-cycle boundary.
+
+argument::persistence
+Per-octave amplitude multiplier, clipped to code::0..1::. code::0.5:: is the usual fBm-style setting.
+
+argument::seed
+Integer-like deterministic gradient seed.
+
+argument::iphase
+Initial phase in cycles, wrapped to code::0..1::.
+
+argument::mul
+Output multiplier.
+
+argument::add
+Output offset.
+
+examples::
+
+code::
+// Basic pitched Perlin/fBm oscillator.
+(
+{
+	PerlinNoise.ar(110, octaves: 8, persistence: 0.5, seed: 12) * 0.15 ! 2
+}.play
+)
+::
+
+code::
+// Use EnvGen externally; the UGen itself has no envelope.
+(
+{
+	var env = EnvGen.kr(Env.perc(0.01, 2.5), doneAction: 2);
+	var sig = PerlinNoise.ar(80, octaves: 10, persistence: 0.55, seed: 1001);
+	(sig * env * 0.2) ! 2
+}.play
+)
+::
+
+code::
+// Alias-aware octave count for the current frequency.
+(
+{
+	var freq = MouseX.kr(40, 2000, 1);
+	var safeOctaves = (SampleRate.ir * 0.5 / freq).log2.floor + 1;
+	PerlinNoise.ar(freq, safeOctaves.clip(1, 32), 0.5, 42) * 0.15 ! 2
+}.play
+)
+::
+
+subsection:: References
+
+Popov, Artem. "Using Perlin noise in sound synthesis." Linux Audio Conference, 2018. https://lac.linuxaudio.org/2018/pdf/14-paper.pdf

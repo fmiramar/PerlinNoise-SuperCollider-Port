@@ -1,0 +1,30 @@
+title:: PerlinNoise Ports
+summary:: Guide to the PerlinNoise SuperCollider port family
+categories:: Libraries
+related:: Classes/PerlinNoise, Classes/PerlinNoise2D, Classes/PerlinNoise3D
+
+section:: Overview
+
+The PerlinNoise port family implements periodic Perlin-noise/fBm oscillators for SuperCollider. The technique is based on Artem Popov, "Using Perlin noise in sound synthesis", Linux Audio Conference 2018, which describes Perlin noise as "a gradient noise that is built from a set of pseudo-random gradient vectors".
+
+section:: Ports
+
+definitionlist::
+## link::Classes/PerlinNoise:: || A 1D periodic gradient-noise oscillator. It advances one normalized phase at audio rate, evaluates hash-generated gradients on a wrapped lattice, and sums up to 32 fBm octaves.
+## link::Classes/PerlinNoise2D:: || A 2D periodic gradient-noise path oscillator. It advances x/y phases through a seamless 2D field, evaluates four corner gradient dot products per octave, and sums up to 32 fBm octaves.
+## link::Classes/PerlinNoise3D:: || A 3D periodic gradient-noise path oscillator with independent x/y/z speeds and initial coordinates. It evaluates eight corner dot products per octave using twelve unit-gradient directions, quintic interpolation, and seeded periodic hashing.
+::
+
+section:: Choosing a path
+
+Use PerlinNoise for a repeating one-dimensional waveform. PerlinNoise2D adds a slice coordinate; PerlinNoise3D adds a second slice coordinate, so one fast axis and two slow axes can produce an evolving pitched texture. Each UGen outputs one channel per instance and supports normal multichannel expansion. These are noise-field dimensions, not spatial-audio formats. A fixed 3D slice does not reproduce the 2D UGen's field.
+
+All three provide audio-rate output, deterministic seeds, amplitude-normalized fBm with up to 32 octaves, and no internal envelope or band limiting. Initial phases are read only when the synth starts. Use low speeds for modulation, reduce octaves at high pitches, and use an external envelope and LeakDC for audible multidimensional scans.
+
+Octave changes wait for wrap boundaries. The 2D version requires an x wrap with y stationary, or simultaneous x/y wraps. The 3D version requires simultaneous wraps of all moving axes and ignores stationary axes. Unrelated speeds can leave changes pending indefinitely. Multidimensional slice boundaries need not be zero crossings, so these changes can still click.
+
+section:: Sources
+
+Popov, Artem. "Using Perlin noise in sound synthesis." Linux Audio Conference, 2018. link::https://lac.linuxaudio.org/2018/pages/event/14/::
+
+Perlin, Ken. "Improved Noise reference implementation" (2002). The 3D extension uses the gradient-noise technique with this project's seeded hash, normalized gradients, and per-octave periods instead of the fixed reference permutation. link::https://cs.nyu.edu/~perlin/noise/::

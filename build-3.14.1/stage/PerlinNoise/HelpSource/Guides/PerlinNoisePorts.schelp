@@ -1,0 +1,19 @@
+title:: PerlinNoise Ports
+summary:: Guide to the PerlinNoise SuperCollider port family
+categories:: Libraries
+related:: Classes/PerlinNoise, Classes/PerlinNoise2D
+
+section:: Overview
+
+The PerlinNoise port family implements periodic Perlin-noise/fBm oscillators for SuperCollider. The technique is based on Artem Popov, "Using Perlin noise in sound synthesis", Linux Audio Conference 2018, which describes Perlin noise as "a gradient noise that is built from a set of pseudo-random gradient vectors".
+
+section:: Ports
+
+definitionlist::
+## link::Classes/PerlinNoise:: || A 1D periodic gradient-noise oscillator. It advances one normalized phase at audio rate, evaluates hash-generated gradients on a wrapped lattice, and sums up to 32 fBm octaves.
+## link::Classes/PerlinNoise2D:: || A 2D periodic gradient-noise path oscillator. It advances x/y phases through a seamless 2D field, evaluates four corner gradient dot products per octave, and sums up to 32 fBm octaves.
+::
+
+section:: Documentation Rules For This Port
+
+Examples in this port are wrapped in parentheses. UGen help files cite their source, explain the internal DSP, list sibling UGens in a See also section, and compare to the closest vanilla UGen when that comparison is useful.
