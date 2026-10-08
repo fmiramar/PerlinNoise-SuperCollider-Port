@@ -46,6 +46,8 @@ The installed `PerlinNoise` extension contains the server plugin, all three clas
 - There is no oversampling or band limiting. High octaves can alias, and 3D evaluates eight corners per octave, increasing CPU cost. Fixed slices can have DC offset; use `LeakDC` for audio patches.
 - This is experimental DSP, not a sample-identical port of the cited implementations. There is no project release CI yet.
 
-## Source and license notes
+## Source and License
 
-The sources above document the synthesis and gradient-noise techniques. The 3D implementation does not copy the reference permutation table or include third-party runtime code. This project does not yet declare its own distribution license; source citations are not a license grant. SuperCollider's SDK retains its own license notices.
+The sources above document the synthesis and gradient-noise techniques. The 3D implementation does not copy the reference permutation table or include third-party runtime code; it is an original adaptation of the documented techniques.
+
+This project is licensed under the **GPL-3.0-or-later** license. It links against the SuperCollider plugin API, which is also distributed under the GPL-3.0 license. See the `LICENSE` file for details.
