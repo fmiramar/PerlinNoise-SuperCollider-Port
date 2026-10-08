@@ -1,0 +1,5 @@
+build*/
+cmake-build-*/
+release_stage/
+*.zip
+.DS_Store

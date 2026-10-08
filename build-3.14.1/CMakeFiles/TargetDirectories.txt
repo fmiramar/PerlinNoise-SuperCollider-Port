@@ -1,7 +1,0 @@
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/CMakeFiles/PerlinNoise_scsynth.dir
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/CMakeFiles/edit_cache.dir
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/CMakeFiles/rebuild_cache.dir
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/CMakeFiles/list_install_components.dir
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/CMakeFiles/install.dir
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/CMakeFiles/install/local.dir
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/CMakeFiles/install/strip.dir

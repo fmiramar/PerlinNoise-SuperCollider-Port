@@ -1,6 +1,0 @@
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/stage/PerlinNoise/PerlinNoise.scx
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/stage/PerlinNoise/Classes/PerlinNoise.sc
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/stage/PerlinNoise/Classes/PerlinNoise2D.sc
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/stage/PerlinNoise/HelpSource/Classes/PerlinNoise.schelp
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/stage/PerlinNoise/HelpSource/Classes/PerlinNoise2D.schelp
-/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/stage/PerlinNoise/HelpSource/Guides/PerlinNoisePorts.schelp

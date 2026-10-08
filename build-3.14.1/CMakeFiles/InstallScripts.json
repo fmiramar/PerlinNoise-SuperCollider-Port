@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/Users/fmm/Desktop/SuperCollider UGen Ports/PerlinNoise/build-3.14.1/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
